@@ -1,38 +1,57 @@
-#include <set>
-#include <string>
-#include <unordered_set>
 #include <iostream>
-#include <unordered_map>
+#include <string>
+#include <map>
+#include <unordered_set>
+#include <cctype>
 
-int main()
-{
-	std::unordered_set<std::string> words;
-	std::set<std::string> duplicate_words;
-	std::string word;
-	
-	std::unordered_map<std::string,int> lubof{
-		{"love",0},
-		{"lovely",0},
-		{"honey",0}
-	};
-	
-	while(std::cin>>word)
-	{
-		if(){
-			count++;
-		}
-		if(words.contains(word))
-		{
-			duplicate_words.insert(word);
-		}
-		else
-		{
-			words.insert(word);
-		}
-		
-	}
-    std::cout << " " << count << '\n';
+bool isLoveWord(const std::string& word) {
+    std::unordered_set<std::string> loveWords {"любовь", "Любовь", "любви", "Любви", "любовью", "Любите", "любят", "Любят", "любил", "Любил", "любила", "Любила", "любило", "Любило", "любили", "Любили", "любящий", "Любящий"
+};
+    return loveWords.find(word) != loveWords.end();
+}
+
+std::string cleanWord(std::string& word) {
+    std::string result;
+    for (char c : word) {
+        if (!std::ispunct(c)) {
+            c = std::tolower(c);
+            result += c;
+        }
+    }
+    return result;
+}
+
+int main() {
+    std::map<std::string, int> loveWordsCount;
     
-	return 0;
+    std::string word;
+    int totalLoveWords = 0;
+    
+    while (std::cin >> word) {
+        word = cleanWord(word);
+        if (isLoveWord(word)) {
+            loveWordsCount[word]++;
+        }
+    }
 
+    for (const auto& [word, count] : loveWordsCount) {
+        std::cout << word << " " << count << "\n";
+        totalLoveWords += count;
+    }
+
+    std::cout << "Count love words: " << totalLoveWords << "\n"; 
+    
+    int rafaelloBoxes = totalLoveWords / 1000;
+    int candies = (totalLoveWords - rafaelloBoxes * 1000) / 15;
+
+    if (rafaelloBoxes > 0) {
+        std::cout << "Rafaello box: " << rafaelloBoxes << "\n";
+        if (candies > 0) {
+            std::cout << "And " << candies << " candy\n";
+        }
+    } else {
+        std::cout << candies << " candy\n";
+    }
+
+    return 0;
 }
