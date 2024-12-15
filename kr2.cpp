@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 
-
 void printMatrix(const std::vector<std::vector<int>>& matrix){
 	for(const auto& row: matrix){
 		for(int el :row){ 
